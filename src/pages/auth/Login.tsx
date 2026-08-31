@@ -19,6 +19,47 @@ export default function Login() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToTest);
   }
 
+  // Função para redirecionar com base no perfil do utilizador (aluno, pai, instituição, etc.)
+  async function redirectUserByRole(userId: string) {
+    try {
+      // Consulta a tabela de perfis para identificar a role do utilizador
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", userId)
+        .single();
+
+      if (profileError || !profile) {
+        // Redirecionamento de segurança caso não encontre a role cadastrada
+        navigate("/dashboard", { replace: true });
+        return;
+      }
+
+      // Roteamento baseado no perfil retornado pela base de dados
+      switch (profile.role) {
+        case "student":
+        case "child":
+          navigate("/child/dashboard", { replace: true });
+          break;
+        case "parent":
+        case "guardian":
+          navigate("/parent/dashboard", { replace: true });
+          break;
+        case "institution":
+        case "school":
+        case "admin":
+          navigate("/institution/dashboard", { replace: true });
+          break;
+        default:
+          navigate("/dashboard", { replace: true });
+          break;
+      }
+    } catch {
+      // Fallback em caso de falha de conexão ou erro inesperado na leitura da tabela
+      navigate("/dashboard", { replace: true });
+    }
+  }
+
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -27,30 +68,34 @@ export default function Login() {
     const cleanEmail = email.trim();
 
     if (!cleanEmail || !password) {
-      setError("Preenche o e-mail e a palavra-passe.");
+      setError("Preencha o e-mail e a palavra-passe.");
       return;
     }
 
     if (!isValidEmail(cleanEmail)) {
-      setError("Por favor, insere um e-mail válido.");
+      setError("Por favor, insira um e-mail válido.");
       return;
     }
 
     setLoading(true);
 
-    const { error: loginError } = await supabase.auth.signInWithPassword({
+    const { data: authData, error: loginError } = await supabase.auth.signInWithPassword({
       email: cleanEmail,
       password,
     });
 
-    setLoading(false);
-
     if (loginError) {
+      setLoading(false);
       setError("E-mail ou palavra-passe incorretos.");
       return;
     }
 
-    navigate("/child/dashboard", { replace: true });
+    if (authData.user) {
+      // Procede com a verificação de permissões/perfis antes do encaminhamento
+      await redirectUserByRole(authData.user.id);
+    }
+
+    setLoading(false);
   }
 
   return (
@@ -66,7 +111,7 @@ export default function Login() {
 
           <div>
             <strong>Finanças Kids</strong>
-            <span>Aprender para crescer</span>
+            <span>Educação e Gestão Financeira</span>
           </div>
         </header>
 
@@ -77,22 +122,22 @@ export default function Login() {
 
           <span>BEM-VINDO!</span>
 
-          <h1>Vamos aprender?</h1>
+          <h1>Aceder à Plataforma</h1>
 
           <p>
-            Entra na tua conta para continuar a tua jornada financeira.
+            Introduza os seus dados de acesso para entrar na sua conta.
           </p>
         </section>
 
         <form onSubmit={handleLogin} className="login-form" noValidate>
           <div className="login-field">
-            <label htmlFor="email-input">Email</label>
+            <label htmlFor="email-input">E-mail</label>
             <div className="login-input">
               <Mail size={21} className="input-icon" />
               <input
                 id="email-input"
                 type="email"
-                placeholder="O teu e-mail"
+                placeholder="seu.email@exemplo.com"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 autoComplete="email"
@@ -109,7 +154,7 @@ export default function Login() {
               <input
                 id="password-input"
                 type={showPassword ? "text" : "password"}
-                placeholder="A tua palavra-passe"
+                placeholder="Sua palavra-passe"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 autoComplete="current-password"
@@ -141,7 +186,7 @@ export default function Login() {
           >
             {loading ? (
               <span className="login-loading-state">
-                <span className="spinner" /> A entrar...
+                <span className="spinner" /> A autenticar...
               </span>
             ) : (
               <>
@@ -153,7 +198,7 @@ export default function Login() {
         </form>
 
         <footer className="login-footer">
-          <p>Aprende. Joga. Cresce.</p>
+          <p>Plataforma Integrada de Educação Financeira</p>
         </footer>
       </main>
     </div>
