@@ -24,7 +24,7 @@ export default function Login() {
     try {
       // Consulta a tabela de perfis para identificar a role do utilizador
       const { data: profile, error: profileError } = await supabase
-        .from("profiles")
+        .from("users")
         .select("role")
         .eq("id", userId)
         .single();
