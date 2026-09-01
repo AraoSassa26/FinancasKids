@@ -1,11 +1,20 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Coins, LockKeyhole, Mail, LogIn, Sparkles, Eye, EyeOff } from "lucide-react";
+import {
+  Coins,
+  LockKeyhole,
+  Mail,
+  LogIn,
+  Sparkles,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { supabase } from "../../lib/supabase";
 
 export default function Login() {
   const navigate = useNavigate();
+  const isMounted = useRef(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,49 +23,88 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
   // Validação simples de formato de e-mail
   function isValidEmail(emailToTest: string): boolean {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToTest);
   }
 
-  // Função para redirecionar com base no perfil do utilizador (aluno, pai, instituição, etc.)
+  // Redireciona o utilizador de acordo com a role existente na tabela users
   async function redirectUserByRole(userId: string) {
     try {
-      // Consulta a tabela de perfis para identificar a role do utilizador
       const { data: profile, error: profileError } = await supabase
         .from("users")
         .select("role")
         .eq("id", userId)
         .single();
 
-      if (profileError || !profile) {
-        // Redirecionamento de segurança caso não encontre a role cadastrada
-        navigate("/dashboard", { replace: true });
+      if (profileError) {
+        console.error("Erro ao carregar perfil:", profileError);
+        if (isMounted.current) {
+          setError("Não foi possível carregar o perfil do utilizador.");
+        }
         return;
       }
 
-      // Roteamento baseado no perfil retornado pela base de dados
+      if (!profile) {
+        console.error("Perfil não encontrado.");
+        if (isMounted.current) {
+          setError("Perfil do utilizador não encontrado.");
+        }
+        return;
+      }
+
+      console.log("Utilizador autenticado:", userId);
+      console.log("Role encontrada:", profile.role);
+
       switch (profile.role) {
+        // CRIANÇA
+        case "kid":
         case "student":
         case "child":
           navigate("/child/dashboard", { replace: true });
           break;
+
+        // RESPONSÁVEL / ENCARREGADO
         case "parent":
         case "guardian":
           navigate("/parent/dashboard", { replace: true });
           break;
-        case "institution":
+
+        // ADMINISTRADOR DA ESCOLA
+        case "school_admin":
         case "school":
+        case "institution":
+          navigate("/institution/dashboard", { replace: true });
+          break;
+
+        // ADMINISTRADOR DO SISTEMA
+        case "system_admin":
         case "admin":
           navigate("/institution/dashboard", { replace: true });
           break;
+
+        // ROLE DESCONHECIDA
         default:
-          navigate("/dashboard", { replace: true });
+          console.error("Role não reconhecida:", profile.role);
+          if (isMounted.current) {
+            setError(
+              "O perfil deste utilizador ainda não possui uma área definida."
+            );
+          }
           break;
       }
-    } catch {
-      // Fallback em caso de falha de conexão ou erro inesperado na leitura da tabela
-      navigate("/dashboard", { replace: true });
+    } catch (err) {
+      console.error("Erro inesperado ao redirecionar:", err);
+      if (isMounted.current) {
+        setError("Ocorreu um erro ao carregar o perfil.");
+      }
     }
   }
 
@@ -79,27 +127,48 @@ export default function Login() {
 
     setLoading(true);
 
-    const { data: authData, error: loginError } = await supabase.auth.signInWithPassword({
-      email: cleanEmail,
-      password,
-    });
+    try {
+      const { data: authData, error: loginError } =
+        await supabase.auth.signInWithPassword({
+          email: cleanEmail,
+          password,
+        });
 
-    if (loginError) {
-      setLoading(false);
-      setError("E-mail ou palavra-passe incorretos.");
-      return;
-    }
+      if (loginError) {
+        console.error("Erro de autenticação:", loginError);
 
-    if (authData.user) {
-      // Procede com a verificação de permissões/perfis antes do encaminhamento
+        if (isMounted.current) {
+          setError("E-mail ou palavra-passe incorretos.");
+        }
+        return;
+      }
+
+      if (!authData.user) {
+        if (isMounted.current) {
+          setError("Não foi possível identificar o utilizador.");
+        }
+        return;
+      }
+
+      console.log("Login realizado com sucesso.");
+      console.log("ID do utilizador:", authData.user.id);
+
       await redirectUserByRole(authData.user.id);
+    } catch (err) {
+      console.error("Erro no login:", err);
+      if (isMounted.current) {
+        setError("Ocorreu um erro ao tentar iniciar sessão.");
+      }
+    } finally {
+      // Evita atualizar estado se o componente já foi desmontado pelo navigate()
+      if (isMounted.current) {
+        setLoading(false);
+      }
     }
-
-    setLoading(false);
   }
 
   return (
-    <div className="login-page">
+    <div className="login-page" translate="no">
       <div className="login-background-shape shape-one" />
       <div className="login-background-shape shape-two" />
 
@@ -132,8 +201,10 @@ export default function Login() {
         <form onSubmit={handleLogin} className="login-form" noValidate>
           <div className="login-field">
             <label htmlFor="email-input">E-mail</label>
+
             <div className="login-input">
               <Mail size={21} className="input-icon" />
+
               <input
                 id="email-input"
                 type="email"
@@ -149,8 +220,10 @@ export default function Login() {
 
           <div className="login-field">
             <label htmlFor="password-input">Palavra-passe</label>
+
             <div className="login-input">
               <LockKeyhole size={21} className="input-icon" />
+
               <input
                 id="password-input"
                 type={showPassword ? "text" : "password"}
@@ -161,20 +234,34 @@ export default function Login() {
                 disabled={loading}
                 required
               />
+
               <button
                 type="button"
                 className="login-password-toggle"
                 onClick={() => setShowPassword((prev) => !prev)}
-                aria-label={showPassword ? "Ocultar palavra-passe" : "Mostrar palavra-passe"}
+                aria-label={
+                  showPassword
+                    ? "Ocultar palavra-passe"
+                    : "Mostrar palavra-passe"
+                }
                 tabIndex={0}
               >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                {showPassword ? (
+                  <EyeOff size={18} />
+                ) : (
+                  <Eye size={18} />
+                )}
               </button>
             </div>
           </div>
 
           {error && (
-            <div className="login-error" role="alert" aria-live="assertive">
+            <div
+              key="login-error-container"
+              className="login-error"
+              role="alert"
+              aria-live="assertive"
+            >
               {error}
             </div>
           )}
@@ -185,14 +272,15 @@ export default function Login() {
             disabled={loading}
           >
             {loading ? (
-              <span className="login-loading-state">
-                <span className="spinner" /> A autenticar...
+              <span key="loading-state" className="login-loading-state">
+                <span className="spinner" />
+                A autenticar...
               </span>
             ) : (
-              <>
+              <span key="idle-state" className="login-idle-state" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                 Entrar
                 <LogIn size={22} />
-              </>
+              </span>
             )}
           </button>
         </form>
