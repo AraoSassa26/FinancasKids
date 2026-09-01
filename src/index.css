@@ -1,3 +1,7 @@
+/* =========================================================
+   ROOT VARIABLES
+   ========================================================= */
+
 :root {
   font-family:
     Inter,
@@ -37,20 +41,47 @@
   --surface: #ffffff;
   --border: #e8ebf2;
 
-  --shadow-sm:
-    0 5px 15px rgba(31, 41, 55, 0.05);
-
-  --shadow:
-    0 12px 30px rgba(31, 41, 55, 0.08);
+  --shadow-sm: 0 5px 15px rgba(31, 41, 55, 0.05);
+  --shadow: 0 12px 30px rgba(31, 41, 55, 0.08);
 
   --radius-sm: 13px;
   --radius: 19px;
   --radius-lg: 27px;
+
+  --primary-color: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-light: #e0e7ff;
+  --accent-yellow: #f59e0b;
+  --accent-sparkle: #fbbf24;
+  --bg-gradient-start: #eef2ff;
+  --bg-gradient-end: #e0e7ff;
+  --text-main: #1e293b;
+  --input-bg: #f8fafc;
+  --input-border: #cbd5e1;
+  --input-focus: #818cf8;
+  --error-bg: #fef2f2;
+  --error-text: #dc2626;
+  --error-border: #fecaca;
+  --card-bg: #ffffff;
+  --shadow-lg: 0 20px 25px -5px rgba(79, 70, 229, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --radius-md: 14px;
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* =========================================================
+   BASE STYLES — MOBILE FIRST
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 * {
   box-sizing: border-box;
 }
+
 
 html {
   min-width: 320px;
@@ -61,9 +92,9 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-
   background: var(--background);
   color: var(--text);
+  font-family: var(--font-family);
 }
 
 button,
@@ -113,68 +144,6 @@ p {
   line-height: 1.6;
 }
 
-/* =========================================================
-   FINANÇAS KIDS — LESSONS
-   ========================================================= */
-
-.lessons-screen {
-  min-height: 100vh;
-  background:
-    radial-gradient(circle at 10% 0%, rgba(255, 213, 79, 0.16), transparent 28%),
-    radial-gradient(circle at 95% 8%, rgba(76, 175, 80, 0.12), transparent 25%),
-    #f7f9fc;
-  color: #172033;
-  padding-bottom: 110px;
-}
-
-/* ==========================================
-   VARIÁVEIS GERAIS E PALETA DE CORES
-   ========================================== */
-:root {
-  --primary-color: #4f46e5;
-  --primary-hover: #4338ca;
-  --primary-light: #e0e7ff;
-  --accent-yellow: #f59e0b;
-  --accent-sparkle: #fbbf24;
-  --bg-gradient-start: #eef2ff;
-  --bg-gradient-end: #e0e7ff;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --input-bg: #f8fafc;
-  --input-border: #cbd5e1;
-  --input-focus: #818cf8;
-  --error-bg: #fef2f2;
-  --error-text: #dc2626;
-  --error-border: #fecaca;
-  --card-bg: #ffffff;
-  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-lg: 0 20px 25px -5px rgba(79, 70, 229, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --radius-lg: 24px;
-  --radius-md: 14px;
-  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-/* ==========================================
-   ESTRUTURA BASE (MOBILE-FIRST)
-   ========================================== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-.login-page {
-  position: relative;
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
-  font-family: var(--font-family);
-  overflow: hidden;
-}
 
 /* Formas Decorativas no Fundo */
 .login-background-shape {
@@ -495,11 +464,14 @@ p {
   letter-spacing: 0.05em;
 }
 
-/* ==========================================
-   MEDIA QUERIES (PROGRESSIVE ENHANCEMENT)
-   ========================================== */
+/* =========================================================
+   MEDIA QUERIES — PROGRESSIVE ENHANCEMENT
+   Mobile: 320px (default)
+   Tablet: 480px+
+   Desktop: 700px+
+   Wide: 1024px+
+   ========================================================= */
 
-/* Tablets em diante (>= 480px) */
 @media (min-width: 480px) {
   .login-page {
     padding: 24px;
@@ -574,28 +546,683 @@ p {
   .login-footer p {
     font-size: 0.875rem;
   }
+
+  .lessons-header {
+    height: 68px;
+    padding: 0 16px;
+  }
+
+  .lessons-back,
+  .lessons-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+
+  .lessons-header-title h1 {
+    font-size: 21px;
+  }
+
+  .lessons-content {
+    width: min(calc(100% - 24px), 680px);
+    padding-top: 20px;
+  }
+
+  .lessons-hero {
+    padding: 22px;
+    border-radius: 22px;
+  }
+
+  .lessons-hero-icon {
+    flex-basis: 55px;
+    width: 55px;
+    height: 55px;
+    border-radius: 16px;
+  }
+
+  .lessons-hero-icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .lessons-hero h2 {
+    font-size: 25px;
+  }
+
+  .lessons-hero p {
+    font-size: 13px;
+  }
+
+  .lessons-progress-card {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .progress-header strong {
+    font-size: 27px;
+  }
+
+  .progress-xp {
+    padding: 8px 10px;
+  }
+
+  .lesson-chapter {
+    border-radius: 21px;
+  }
+
+  .chapter-header {
+    padding: 20px 18px 15px;
+  }
+
+  .chapter-number {
+    flex-basis: 42px;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+  }
+
+  .chapter-header-info h2 {
+    font-size: 18px;
+  }
+
+  .chapter-header-info p {
+    font-size: 12px;
+  }
+
+  .chapter-progress-info {
+    padding: 0 18px;
+  }
+
+  .chapter-progress {
+    margin-left: 18px;
+    margin-right: 18px;
+  }
+
+  .lesson-item {
+    grid-template-columns: 40px minmax(0, 1fr) 18px;
+    gap: 11px;
+    padding: 16px 18px;
+  }
+
+  .lesson-item-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+
+  .lesson-item h3 {
+    font-size: 14px;
+  }
+
+  .lesson-item p {
+    font-size: 11px;
+  }
+
+  .lesson-item-meta span {
+    font-size: 9px;
+  }
+
+  .lessons-motivation {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .motivation-icon {
+    flex-basis: 46px;
+    width: 46px;
+    height: 46px;
+  }
+
+  .lessons-motivation h2 {
+    font-size: 18px;
+  }
+
+  .lessons-motivation p {
+    font-size: 12px;
+  }
+
+  .kids-bottom-nav {
+    bottom: 10px;
+    width: calc(100% - 20px);
+    border-radius: 19px;
+  }
+
+  .nav-item {
+    min-height: 54px;
+  }
+
+  .kids-header {
+    width: min(100% - 20px, 1100px);
+  }
+
+  .kids-content {
+    width: min(100% - 20px, 1100px);
+  }
+
+  .kids-hero {
+    min-height: 270px;
+    padding: 25px;
+    border-radius: 23px;
+  }
+
+  .kids-hero h1 {
+    font-size: 34px;
+  }
+
+  .kids-hero p {
+    font-size: 14px;
+  }
+
+  .hero-illustration {
+    width: 140px;
+    height: 180px;
+  }
+
+  .hero-money {
+    width: 82px;
+    height: 82px;
+    right: 25px;
+  }
+
+  .hero-money svg {
+    width: 50px;
+  }
+
+  .hero-circle.circle-one {
+    width: 150px;
+    height: 150px;
+    right: -20px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .stat-card {
+    padding: 14px;
+  }
+
+  .continue-card {
+    padding: 16px;
+  }
+
+  .lesson-image {
+    width: 62px;
+    height: 62px;
+  }
+
+  .continue-info h3 {
+    font-size: 16px;
+  }
+
+  .challenge-card {
+    align-items: flex-start;
+    padding: 18px;
+  }
+
+  .challenge-icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .reward-card,
+  .tip-card {
+    padding: 17px;
+  }
+
+  .motivation-card {
+    padding: 25px 18px;
+  }
+
+  .lesson-topbar {
+    padding: 11px 12px;
+    gap: 9px;
+  }
+
+  .lesson-back {
+    width: 42px;
+    height: 42px;
+  }
+
+  .lesson-xp-badge {
+    padding: 8px 9px;
+  }
+
+  .lesson-main {
+    width: min(100% - 22px, 760px);
+    padding-top: 25px;
+  }
+
+  .lesson-illustration {
+    width: 180px;
+    height: 160px;
+  }
+
+  .lesson-step h1 {
+    font-size: 30px;
+  }
+
+  .lesson-intro-text {
+    font-size: 15px;
+  }
+
+  .lesson-highlight,
+  .lesson-options,
+  .mission-card,
+  .mission-answer {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .lesson-footer {
+    padding: 10px 12px 13px;
+  }
+
+  .lesson-next-button {
+    min-height: 55px;
+  }
 }
-/* =========================================================
-   HEADER
-   ========================================================= */
 
-.lessons-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
+@media (min-width: 700px) {
+  .lessons-header {
+    height: 76px;
+    padding: 0 28px;
+  }
 
-  height: 76px;
-  padding: 0 28px;
+  .lessons-back,
+  .lessons-profile {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  .lessons-header-title h1 {
+    font-size: 24px;
+  }
 
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  .lessons-content {
+    width: min(100% - 32px, 980px);
+    padding: 32px 0 50px;
+  }
 
-  border-bottom: 1px solid #e8edf4;
+  .lessons-hero {
+    padding: 28px;
+    border-radius: 28px;
+  }
+
+  .lessons-hero-icon {
+    flex: 0 0 68px;
+    width: 68px;
+    height: 68px;
+    border-radius: 20px;
+  }
+
+  .lessons-hero h2 {
+    font-size: clamp(25px, 4vw, 34px);
+  }
+
+  .lessons-hero p {
+    font-size: 15px;
+  }
+
+  .lessons-progress-card {
+    padding: 24px 26px;
+    border-radius: 24px;
+  }
+
+  .progress-header strong {
+    font-size: 30px;
+  }
+
+  .progress-xp {
+    padding: 10px 14px;
+  }
+
+  .lesson-chapter {
+    border-radius: 26px;
+  }
+
+  .chapter-header {
+    padding: 25px 25px 18px;
+  }
+
+  .chapter-number {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 15px;
+  }
+
+  .chapter-header-info h2 {
+    font-size: 21px;
+  }
+
+  .chapter-header-info p {
+    font-size: 13px;
+  }
+
+  .chapter-progress-info {
+    padding: 0 25px;
+  }
+
+  .chapter-progress {
+    margin: 9px 25px 20px;
+  }
+
+  .lesson-item {
+    grid-template-columns: 44px minmax(0, 1fr) 24px;
+    gap: 15px;
+    padding: 18px 25px;
+  }
+
+  .lesson-item-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .lesson-item h3 {
+    font-size: 16px;
+  }
+
+  .lesson-item p {
+    font-size: 12px;
+  }
+
+  .lesson-item-meta span {
+    font-size: 10px;
+  }
+
+  .lessons-motivation {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .motivation-icon {
+    flex: 0 0 54px;
+    width: 54px;
+    height: 54px;
+  }
+
+  .lessons-motivation h2 {
+    font-size: 20px;
+  }
+
+  .lessons-motivation p {
+    font-size: 13px;
+  }
+
+  .kids-bottom-nav {
+    bottom: 14px;
+    width: min(calc(100% - 28px), 520px);
+    border-radius: 22px;
+  }
+
+  .nav-item {
+    min-height: 58px;
+  }
+
+  .kids-header {
+    width: min(100% - 32px, 1100px);
+    padding: 18px 0;
+  }
+
+  .kids-content {
+    width: min(100% - 32px, 1100px);
+  }
+
+  .kids-hero {
+    min-height: 300px;
+    padding: 38px;
+    border-radius: var(--radius-lg);
+  }
+
+  .kids-hero h1 {
+    font-size: clamp(34px, 5vw, 54px);
+  }
+
+  .kids-hero p {
+    font-size: 15px;
+  }
+
+  .hero-illustration {
+    width: 280px;
+    height: 230px;
+  }
+
+  .hero-money {
+    width: 110px;
+    height: 110px;
+    right: 58px;
+  }
+
+  .hero-circle.circle-one {
+    width: 220px;
+    height: 220px;
+    right: -30px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .stat-card {
+    padding: 17px;
+  }
+
+  .continue-card {
+    padding: 20px;
+  }
+
+  .lesson-image {
+    width: 76px;
+    height: 76px;
+  }
+
+  .continue-info h3 {
+    font-size: 19px;
+  }
+
+  .challenge-card {
+    align-items: center;
+    padding: 24px;
+  }
+
+  .challenge-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .reward-card,
+  .tip-card {
+    padding: 20px;
+  }
+
+  .motivation-card {
+    padding: 30px;
+  }
+
+  .lesson-topbar {
+    padding: 14px max(20px, calc((100% - 900px) / 2));
+    gap: 14px;
+  }
+
+  .lesson-back {
+    width: 46px;
+    height: 46px;
+  }
+
+  .lesson-xp-badge {
+    padding: 9px 12px;
+  }
+
+  .lesson-main {
+    width: min(100% - 32px, 760px);
+    padding: 35px 0 20px;
+  }
+
+  .lesson-illustration {
+    width: 210px;
+    height: 180px;
+  }
+
+  .lesson-step h1 {
+    font-size: clamp(30px, 5vw, 44px);
+  }
+
+  .lesson-intro-text {
+    font-size: 17px;
+  }
+
+  .lesson-footer {
+    padding: 14px 20px 18px;
+  }
+
+  .lesson-next-button {
+    min-height: 58px;
+    font-size: 17px;
+  }
+
+  .lessons-header {
+    width: min(100% - 32px, 1050px);
+    margin: 0 auto;
+    padding: 28px 0 20px;
+  }
+
+  .back-button {
+    width: 48px;
+    height: 48px;
+  }
+
+  .lessons-header-title span {
+    font-size: 11px;
+  }
+
+  .lessons-header-title h1 {
+    font-size: clamp(28px, 5vw, 38px);
+  }
+
+  .lessons-content {
+    width: min(100% - 32px, 1050px);
+  }
+
+  .lessons-intro {
+    padding: 28px;
+    border-radius: 28px;
+  }
+
+  .lessons-intro-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 24px;
+  }
+
+  .lessons-intro h2 {
+    font-size: 28px;
+  }
+
+  .lessons-intro p {
+    font-size: 15px;
+  }
+
+  .overall-progress {
+    padding: 23px;
+    border-radius: 23px;
+  }
+
+  .progress-top strong {
+    font-size: 25px;
+  }
+
+  .progress-xp {
+    padding: 9px 13px;
+  }
+
+  .progress-track {
+    height: 12px;
+  }
+
+  .lessons-heading {
+    margin: 34px 0 15px;
+  }
+
+  .lessons-heading h2 {
+    font-size: 25px;
+  }
+
+  .lesson-chapter {
+    overflow: hidden;
+    border-radius: 26px;
+  }
+
+  .chapter-header {
+    padding: 23px;
+  }
+
+  .chapter-number {
+    width: 44px;
+    height: 44px;
+    border-radius: 15px;
+  }
+
+  .chapter-icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 20px;
+  }
+
+  .chapter-title h2 {
+    font-size: 20px;
+  }
+
+  .chapter-title p {
+    font-size: 13px;
+  }
+
+  .lesson-item {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .lesson-number {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+  }
+
+  .lesson-info h3 {
+    font-size: 16px;
+  }
+
+  .lesson-info p {
+    font-size: 12px;
+  }
+
+  .lesson-arrow {
+    width: 38px;
+    height: 38px;
+    border-radius: 13px;
+  }
+
+  .kids-bottom-nav {
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    width: min(calc(100% - 28px), 520px);
+    border-radius: 22px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .kids-header {
+    width: min(100% - 48px, 1100px);
+  }
+
+  .kids-content {
+    width: min(100% - 48px, 1100px);
+  }
 }
 
 .lessons-back,
@@ -1396,220 +2023,7 @@ p {
    RESPONSIVE
    ========================================================= */
 
-@media (max-width: 700px) {
 
-  .lessons-header {
-    height: 68px;
-    padding: 0 16px;
-  }
-
-  .lessons-back,
-  .lessons-profile {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-  }
-
-  .lessons-header-title h1 {
-    font-size: 21px;
-  }
-
-  .lessons-content {
-    width: min(
-      calc(100% - 24px),
-      680px
-    );
-
-    padding-top: 20px;
-  }
-
-  .lessons-hero {
-    padding: 22px;
-
-    border-radius: 22px;
-  }
-
-  .lessons-hero-icon {
-    flex-basis: 55px;
-    width: 55px;
-    height: 55px;
-    border-radius: 16px;
-  }
-
-  .lessons-hero-icon svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  .lessons-hero h2 {
-    font-size: 25px;
-  }
-
-  .lessons-hero p {
-    font-size: 13px;
-  }
-
-  .lessons-progress-card {
-    padding: 20px;
-
-    border-radius: 20px;
-  }
-
-  .progress-header strong {
-    font-size: 27px;
-  }
-
-  .progress-xp {
-    padding: 8px 10px;
-  }
-
-  .lesson-chapter {
-    border-radius: 21px;
-  }
-
-  .chapter-header {
-    padding: 20px 18px 15px;
-  }
-
-  .chapter-number {
-    flex-basis: 42px;
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
-  }
-
-  .chapter-header-info h2 {
-    font-size: 18px;
-  }
-
-  .chapter-header-info p {
-    font-size: 12px;
-  }
-
-  .chapter-progress-info {
-    padding: 0 18px;
-  }
-
-  .chapter-progress {
-    margin-left: 18px;
-    margin-right: 18px;
-  }
-
-  .lesson-item {
-    grid-template-columns: 40px minmax(0, 1fr) 18px;
-
-    gap: 11px;
-
-    padding: 16px 18px;
-  }
-
-  .lesson-item-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-  }
-
-  .lesson-item h3 {
-    font-size: 14px;
-  }
-
-  .lesson-item p {
-    font-size: 11px;
-  }
-
-  .lesson-item-meta span {
-    font-size: 9px;
-  }
-
-  .lessons-motivation {
-    padding: 20px;
-
-    border-radius: 20px;
-  }
-
-  .motivation-icon {
-    flex-basis: 46px;
-    width: 46px;
-    height: 46px;
-  }
-
-  .lessons-motivation h2 {
-    font-size: 18px;
-  }
-
-  .lessons-motivation p {
-    font-size: 12px;
-  }
-
-  .kids-bottom-nav {
-    bottom: 10px;
-
-    width: calc(100% - 20px);
-
-    border-radius: 19px;
-  }
-
-  .nav-item {
-    min-height: 54px;
-  }
-}
-
-@media (max-width: 430px) {
-
-  .lessons-hero {
-    align-items: flex-start;
-    gap: 13px;
-  }
-
-  .lessons-hero-icon {
-    flex-basis: 48px;
-    width: 48px;
-    height: 48px;
-  }
-
-  .lessons-hero h2 {
-    font-size: 22px;
-  }
-
-  .lessons-hero p {
-    font-size: 12px;
-  }
-
-  .progress-header {
-    align-items: flex-start;
-  }
-
-  .progress-xp {
-    font-size: 12px;
-  }
-
-  .lesson-item {
-    grid-template-columns: 38px minmax(0, 1fr);
-
-    padding-right: 14px;
-  }
-
-  .lesson-item-arrow {
-    display: none;
-  }
-
-  .lesson-item-icon {
-    width: 38px;
-    height: 38px;
-  }
-
-  .lesson-item h3 {
-    font-size: 13px;
-  }
-
-  .lesson-item-meta {
-    gap: 4px;
-  }
-
-  .lesson-item-meta span {
-    padding: 3px 6px;
-  }
-}
 
 /* ==================================================
    APP
@@ -3232,205 +3646,7 @@ p {
   font-size: 11px;
 }
 
-/* ==================================================
-   MOBILE
-================================================== */
 
-@media (max-width: 700px) {
-  .kids-header {
-    width: min(100% - 20px, 1100px);
-  }
-
-  .kids-content {
-    width: min(100% - 20px, 1100px);
-  }
-
-  .kids-hero {
-    min-height: 270px;
-
-    padding: 25px;
-
-    border-radius: 23px;
-  }
-
-  .kids-hero h1 {
-    font-size: 34px;
-  }
-
-  .kids-hero p {
-    font-size: 14px;
-  }
-
-  .hero-illustration {
-    width: 140px;
-    height: 180px;
-  }
-
-  .hero-money {
-    width: 82px;
-    height: 82px;
-
-    right: 25px;
-  }
-
-  .hero-money svg {
-    width: 50px;
-  }
-
-  .hero-circle.circle-one {
-    width: 150px;
-    height: 150px;
-
-    right: -20px;
-  }
-
-  .stats-grid {
-    grid-template-columns: 1fr;
-
-    gap: 10px;
-  }
-
-  .stat-card {
-    padding: 14px;
-  }
-
-  .continue-card {
-    padding: 16px;
-  }
-
-  .lesson-image {
-    width: 62px;
-    height: 62px;
-  }
-
-  .continue-info h3 {
-    font-size: 16px;
-  }
-
-  .challenge-card {
-    align-items: flex-start;
-
-    padding: 18px;
-  }
-
-  .challenge-icon {
-    width: 52px;
-    height: 52px;
-  }
-
-  .reward-card,
-  .tip-card {
-    padding: 17px;
-  }
-
-  .motivation-card {
-    padding: 25px 18px;
-  }
-
-  .lesson-topbar {
-    padding: 11px 12px;
-
-    gap: 9px;
-  }
-
-  .lesson-back {
-    width: 42px;
-    height: 42px;
-  }
-
-  .lesson-xp-badge {
-    padding: 8px 9px;
-  }
-
-  .lesson-main {
-    width: min(100% - 22px, 760px);
-
-    padding-top: 25px;
-  }
-
-  .lesson-illustration {
-    width: 180px;
-    height: 160px;
-  }
-
-  .lesson-step h1 {
-    font-size: 30px;
-  }
-
-  .lesson-intro-text {
-    font-size: 15px;
-  }
-
-  .lesson-highlight,
-  .lesson-options,
-  .mission-card,
-  .mission-answer {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .lesson-footer {
-    padding: 10px 12px 13px;
-  }
-
-  .lesson-next-button {
-    min-height: 55px;
-  }
-}
-
-@media (max-width: 450px) {
-  .kids-hero {
-    min-height: 250px;
-
-    padding: 22px;
-  }
-
-  .kids-hero h1 {
-    font-size: 30px;
-  }
-
-  .hero-illustration {
-    display: none;
-  }
-
-  .level-number {
-    font-size: 38px;
-  }
-
-  .block-title h2 {
-    font-size: 20px;
-  }
-
-  .continue-card {
-    align-items: flex-start;
-  }
-
-  .play-button {
-    width: 50px;
-    height: 50px;
-  }
-
-  .lesson-xp-badge {
-    font-size: 10px;
-  }
-
-  .lesson-step h1 {
-    font-size: 28px;
-  }
-
-  .lesson-highlight {
-    align-items: flex-start;
-  }
-
-  .lesson-option {
-    padding: 14px;
-  }
-
-  .choice-card {
-    width: 75px;
-    height: 75px;
-  }
-}
 /* =========================================================
    FINANÇAS KIDS — PÁGINA DE AULAS
 ========================================================= */
