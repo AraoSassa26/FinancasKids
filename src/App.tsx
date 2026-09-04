@@ -14,7 +14,7 @@ import Game from "./pages/child/Game";
 import Rewards from "./pages/child/Rewards";
 import Profile from "./pages/child/Profile";
 import Settings from "./pages/child/Settings";
-
+import InstitutionDashboard from "./pages/institution/InstitutionDashboard";
 function App() {
   return (
     <BrowserRouter>
@@ -27,6 +27,11 @@ function App() {
         <Route
           path="/login"
           element={<Login />}
+        />
+
+         <Route
+          path="/institution/dashboard"
+          element={<InstitutionDashboard />}
         />
 
         <Route
@@ -69,6 +74,8 @@ function App() {
           element={<Navigate to="/login" replace />}
         />
       </Routes>
+
+      
     </BrowserRouter>
   );
 }
